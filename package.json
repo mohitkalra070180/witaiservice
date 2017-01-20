@@ -1,0 +1,38 @@
+{
+  "name": "witairestservice",
+  "version": "1.0.0",
+  "description": "Rest Service on Wit.AI with action execution",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mohitkalraniit/witaiservice.git"
+  },
+  "keywords": [
+    "rest",
+	"wit",
+    "wit.ai",
+    "bot",
+    "botengine",
+    "bots",
+    "nlp",
+    "automation"
+  ],
+  "author": "Mohit Kalra",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mohitkalraniit/witaiservice/issues"
+  },
+  "homepage": "https://github.com/mohitkalraniit/witaiservice#readme",
+  "dependencies": {
+        "express": "~4.0.0",
+        "body-parser": "~1.0.1",
+		"isomorphic-fetch": "^2.2.1",
+		"uuid": "^3.0.0"
+    },
+	"engines": {
+    "node": ">=4.0.0"
+  }
+}
