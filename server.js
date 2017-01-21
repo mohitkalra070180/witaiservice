@@ -6,7 +6,9 @@
 module.exports = {
   log: require('./lib/log'),
   Wit: require('./lib/wit'),
-  WitActions:require('./witactions') 
+  OpenHabClient: require('./lib/openhabclient'),
+  WitActions:require('./witactions') ,
+  
 };
 const {DEFAULT_MAX_STEPS} = require('./lib/config');
 
@@ -24,6 +26,7 @@ const accessToken=  '5CSDFXFFQBHOLJNV2WDDHEKDPFBATEDP'
 
 let Wit = null;
 let WitActions = null;
+let OpenHabClient = null;
 try 
 {
 	// Setting up Wit client and actions
@@ -31,8 +34,10 @@ try
 	var fs = require('fs');
 	Wit = require('./').Wit;
 	WitActions = require('./').WitActions;
+	OpenHabClient = require('./').OpenHabClient;
+	const openhabclient=new OpenHabClient({});
+	const actions=new WitActions({OpenHabClient:openhabclient});
 	
-	const actions=new WitActions({});
 	const serviceActions=actions.ServiceActions;
 	const witClient = new Wit({accessToken,actions:serviceActions});
 
@@ -69,16 +74,27 @@ router.route('/witai')
     .get(function(req, res) {
 		
 		var q = req.query.q;	
-		let context = typeof initContext === 'object' ? initContext : {};
-		const sessionId = uuid.v1();
+		var i=0;
 		
 		
-		witClient.runActions(sessionId, q, context, steps)
+		var array = q.split('and ');
+		
+		
+		
+		
+		
+		for(i=0;i<array.length;i++)
+		{
+		  let context = typeof initContext === 'object' ? initContext : {};
+		  const sessionId = uuid.v1();
+		  console.log(array[i]);
+		  witClient.runActions(sessionId, array[i], context, steps)
 			.then((ctx) => {
 			  context = ctx;
 			  res.json(context);	
-			  return;
+			
 			});
+		}
     });
 
 	// more routes for our API will happen here
@@ -90,7 +106,7 @@ router.route('/witai')
 	// START THE SERVER
 	// =============================================================================
 	app.listen(port);
-	console.log('Magic happens on port ' + port);
+	console.log('WitAI Rest Services Listening on port ' + port);
 }
 catch (e) 
 {

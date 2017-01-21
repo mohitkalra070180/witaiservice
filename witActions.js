@@ -1,13 +1,20 @@
 'use strict';
 const log = require('./lib/log');
 
+
 function WitActions(opts) 
 {
+	
+  this.OpenHabRestClient=opts.OpenHabClient;
+  
+  const OpenHabRestClient=opts.OpenHabClient;
+  
   if (!(this instanceof WitActions)) {
 	  
     return new WitActions(opts);
 	
   }
+  
 	const firstEntityValue = (entities, entity) => 
 			{
 
@@ -51,20 +58,68 @@ function WitActions(opts)
 		return context;
 	  },
 	  
-	  
+	   changeChannel({context, entities}) {
+		
+		var number = firstEntityValue(entities, 'number');
+		
+		
+		if(number){
+			context.intent='channel';
+			context.number=number;
+
+		
+		var handler=function (data, response) {
+				    
+					return context;
+				};
+		OpenHabRestClient.Put_Status('Channel_Unknown', number+'',handler);
+			}
+	   },
+	   
 	  changeDeviceStatus({context, entities}) {
 		
 		var devicetype = firstEntityValue(entities, 'devicetype');
 		var on_off = firstEntityValue(entities, 'on_off');
+		
 		if(devicetype){
 			context.intent='DeviceAction';
 			context.devicetype=devicetype;
 			context.on_off=on_off;
+		
+		var handler=function (data, response) {
+				    
+					return context;
+				}
+		var item=devicetype;
+		var state=on_off;
+		if(item=='tv' && state=='on')
+		 {
+		   OpenHabRestClient.Put_Status('TV_FF_BedRoom',on_off.toUpperCase(),handler);
+		 }
+		 if(item=='tv' && state=='off')
+		 {
+		   OpenHabRestClient.Put_Status('TV_FF_BedRoom',on_off.toUpperCase(),handler);
+		 }
+		 if((item.toLowerCase()=='light' || item.toLowerCase()=='lights') && state=='on')
+		 {
+		   OpenHabRestClient.Put_Status("Light_FF_BED_YellowLight","ON",handler)
+		 }
+		 if((item.toLowerCase()=='light' || item.toLowerCase()=='lights') && state=='off')
+		 {
+		   OpenHabRestClient.Put_Status("Light_FF_BED_YellowLight","OFF",handler)
+		 }
+
+			context.missingDevicetype=true;
+			delete context.devicetype;
+			
+			return context;
+			
+			
 		} else {
 			context.missingDevicetype=true;
 			delete context.devicetype;
 		}
-		return context;
+		//return context;
 	  },
 	  
 	  getJokeOfTheDay({context, entities}) {
@@ -100,6 +155,34 @@ function WitActions(opts)
 	}
 
 	this.ServiceActions=serviceActions;
+	
+	const makeActionResponseHandler = (logger, endpoint) => {
+  return rsp => {
+    const error = err => {
+      logger.error('[' + endpoint + '] Error: ' + err);
+      throw err;
+    };
+
+    if (rsp instanceof Error) {
+      return error(rsp);
+    }
+
+    const [json, status] = rsp;
+
+    if (json instanceof Error) {
+      return error(json);
+    }
+
+    const err = json.error || status !== 200 && json.body + ' (' + status + ')';
+
+    if (err) {
+      return error(err);
+    }
+
+    logger.debug('[' + endpoint + '] Response: ' + JSON.stringify(json));
+    return json;
+  }
+};
 };
 
 module.exports = WitActions;
