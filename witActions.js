@@ -1,11 +1,38 @@
 'use strict';
 const log = require('./lib/log');
+const JSONStream = require('JSONStream')
+const chalk = require('chalk')
+const request = require('request')
+const tc = require('term-cluster')
+
+const ops = {
+  indexPath: 'tvIndexes',
+  logLevel: 'error'
+}
+const fs = require('fs')
+
+
+var index
 
 
 function WitActions(opts) 
 {
 	
+	const indexData = function(err, newIndex) {
+	
+  if (!err) {
+    index = newIndex
+    fs.createReadStream('SearchIndex.txt')
+      .pipe(JSONStream.parse())
+      .pipe(index.defaultPipeline())
+      .pipe(index.add())
+      .on('data', function(data) {})
+    
+  }
+}
   this.OpenHabRestClient=opts.OpenHabClient;
+  require('search-index')(ops, indexData);
+  
   
   const OpenHabRestClient=opts.OpenHabClient;
   
@@ -15,6 +42,21 @@ function WitActions(opts)
 	
   }
   
+
+  const printResults = function (data) {
+		console.log('here');
+		  console.log('\n' + chalk.blue(data.document.id) + ' : ' + chalk.red(data.document.title))
+		  const terms = Object.keys(data.scoringCriteria[0].df).map(function(item) {
+			return item.substring(2)
+		  })  
+		  for (var key in data.document) {
+			if (data.document[key]) {
+			  var teaser = tc(data.document[key], terms)
+			  if (teaser) console.log(teaser)
+			}
+		  }
+		  console.log()
+		};
 	const firstEntityValue = (entities, entity) => 
 			{
 
@@ -60,20 +102,44 @@ function WitActions(opts)
 	  
 	   changeChannel({context, entities}) {
 		
-		var number = firstEntityValue(entities, 'number');
+		var channelname = firstEntityValue(entities, 'channelname');
+		if(channelname==null)
+		{
+			console.log(JSON.stringify(entities));
+			channelname = firstEntityValue(entities, 'message_subject');
+		}
 		
+		if(channelname==null)
+		{
+			channelname = firstEntityValue(entities, 'message_body');
+		}
 		
-		if(number){
-			context.intent='channel';
-			context.number=number;
+		if(channelname==null)
+		{
+			channelname = firstEntityValue(entities, 'contact');
+		}
 
+		console.log(channelname);
 		
+		var channelNumbers=[]; 	
 		var handler=function (data, response) {
-				    
 					return context;
 				};
-		OpenHabRestClient.Put_Status('Channel_Unknown', number+'',handler);
+		if(channelname){
+			context.intent='channel';
+			
+		  index.search(channelname.toString().toLowerCase().replace( /\r?\n|\r/g, '' ))
+		  
+			.on('data', function (data) {channelNumbers.push(data.document.id)})
+			.on('end' , function(){ console.log(JSON.stringify(channelNumbers));
+									OpenHabRestClient.Put_Status('Channel_Unknown', channelNumbers[0],handler);
+									});
+		
+
+		
+				
 			}
+		
 	   },
 	   
 	  changeDeviceStatus({context, entities}) {

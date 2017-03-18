@@ -19,7 +19,10 @@ const steps = DEFAULT_MAX_STEPS;
 var express    = require('express');        // call express
 var app        = express();                 // define our app using express
 var bodyParser = require('body-parser');
-var fs = require('fs');
+
+
+const fs = require('fs')
+
 
 // Access token for wit
 const accessToken=  '5CSDFXFFQBHOLJNV2WDDHEKDPFBATEDP'
@@ -31,11 +34,12 @@ try
 {
 	// Setting up Wit client and actions
 		
-	var fs = require('fs');
+	
 	Wit = require('./').Wit;
 	WitActions = require('./').WitActions;
 	OpenHabClient = require('./').OpenHabClient;
 	const openhabclient=new OpenHabClient({});
+	
 	const actions=new WitActions({OpenHabClient:openhabclient});
 	
 	const serviceActions=actions.ServiceActions;
@@ -105,6 +109,7 @@ router.route('/witai')
 
 	// START THE SERVER
 	// =============================================================================
+	
 	app.listen(port);
 	console.log('WitAI Rest Services Listening on port ' + port);
 }
