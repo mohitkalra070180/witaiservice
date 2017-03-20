@@ -150,7 +150,7 @@ function WitActions(opts)
 			.on('end' , function(){ console.log(JSON.stringify(channelNumbers));
 									var sortedChannelNumbers=sort(channelNumbers);
 									OpenHabRestClient.Put_Status('Channel_Unknown', (sortedChannelNumbers[0].split(':'))[0],handler);
-									context.number=(sortedChannelNumbers[0].split(':'))[0]);
+									//context.number=(sortedChannelNumbers[0].split(':'))[0]);
 									});
 		
 
