@@ -41,7 +41,23 @@ function WitActions(opts)
     return new WitActions(opts);
 	
   }
-  
+  const sort=function (a) {
+    var swapped;
+    do {
+        swapped = false;
+        for (var i = 0; i < a.length -1; i++) {
+		
+            if (a[i].length > a[i + 1].length) {
+                var temp = a[i];
+                a[i] = a[i + 1];
+                a[i + 1] = temp;
+                swapped = true;
+            }
+        }
+    } while (swapped);
+	
+	return a;
+}
 
   const printResults = function (data) {
 		console.log('here');
@@ -119,7 +135,7 @@ function WitActions(opts)
 			channelname = firstEntityValue(entities, 'contact');
 		}
 
-		console.log(channelname);
+		//console.log(channelname);
 		
 		var channelNumbers=[]; 	
 		var handler=function (data, response) {
@@ -130,9 +146,11 @@ function WitActions(opts)
 			
 		  index.search(channelname.toString().toLowerCase().replace( /\r?\n|\r/g, '' ))
 		  
-			.on('data', function (data) {channelNumbers.push(data.document.id)})
+			.on('data', function (data) {channelNumbers.push(data.document.id+':'+data.document.title)})
 			.on('end' , function(){ console.log(JSON.stringify(channelNumbers));
-									OpenHabRestClient.Put_Status('Channel_Unknown', channelNumbers[0],handler);
+									var sortedChannelNumbers=sort(channelNumbers);
+									OpenHabRestClient.Put_Status('Channel_Unknown', (sortedChannelNumbers[0].split(':'))[0],handler);
+									context.number=(sortedChannelNumbers[0].split(':'))[0]);
 									});
 		
 

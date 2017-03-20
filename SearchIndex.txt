@@ -14,7 +14,7 @@
   "body": "sony"
 }
 {
-  "id": "112",
+  "id": "113",
   "title":"colors",
   "body": "colors hindi"
 }
@@ -82,6 +82,76 @@
   "id": "180",
   "title":"fox fx",
   "body": "fox fx"
+}
+{
+  "id": "199",
+  "title":"star gold",
+  "body": "star gold"
+}
+{
+  "id": "200",
+  "title":"zee cinema",
+  "body": "zee cinema"
+}
+{
+  "id": "201",
+  "title":"set max",
+  "body": "set max`"
+}
+{
+  "id": "202",
+  "title":"& pictures",
+  "body": "and pictures"
+}
+{
+  "id": "208",
+  "title":"zee classic",
+  "body": "zee classic"
+}
+{
+  "id": "209",
+  "title":"sony max",
+  "body": "sony max"
+}
+{
+  "id": "211",
+  "title":"zee action",
+  "body": "zee action"
+}
+{
+  "id": "250",
+  "title":"star movies",
+  "body": "star movies"
+}
+{
+  "id": "251",
+  "title":"Z studio",
+  "body": "Zee studio"
+}
+{
+  "id": "252",
+  "title":"HBO",
+  "body": "HBO`"
+}
+{
+  "id": "253",
+  "title":"sony pix",
+  "body": "sony pix"
+}
+{
+  "id": "254",
+  "title":"star movies action",
+  "body": "star movies action"
+}
+{
+  "id": "255",
+  "title":"wb",
+  "body": "wb"
+}
+{
+  "id": "259",
+  "title":"romedy now",
+  "body": "romedy now"
 }
 {
   "id": "442",
