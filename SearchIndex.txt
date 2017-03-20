@@ -200,3 +200,78 @@
   "title":"disney junior",
   "body": "disney junior"
 }
+{
+  "id": "300",
+  "title":"india tv",
+  "body": "india tv"
+}
+{
+  "id": "301",
+  "title":"news 18",
+  "body": "news 18"
+}
+{
+  "id": "302",
+  "title":"abp news",
+  "body": "abp news"
+}
+{
+  "id": "303",
+  "title":"zee news",
+  "body": "	"
+}
+{
+  "id": "304",
+  "title":"ndtv news",
+  "body": "ndtv hindi news"
+}
+{
+  "id": "305",
+  "title":"news nation",
+  "body": "news nation"
+}
+{
+  "id": "308",
+  "title":"aaj tak",
+  "body": "aaj tak"
+}
+{
+  "id": "414",
+  "title":"cnn news",
+  "body": "cnn news"
+}
+{
+  "id": "415",
+  "title":"ndtv 24",
+  "body": "ndtv 24 english"
+}
+{
+  "id": "416",
+  "title":"india today",
+  "body": "india today"
+}
+{
+  "id": "417",
+  "title":"times now",
+  "body": "times now english news"
+}
+{
+  "id": "419",
+  "title":"wion",
+  "body": "wion"
+}
+{
+  "id": "421",
+  "title":"cnn",
+  "body": "cnn international news"
+}
+{
+  "id": "422",
+  "title":"bbc world",
+  "body": "bbc world"
+}
+{
+  "id": "403",
+  "title":"cnbc awaz",
+  "body": "cnbc awaj business news"
+}
