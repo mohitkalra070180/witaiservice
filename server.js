@@ -7,7 +7,7 @@ module.exports = {
   log: require('./lib/log'),
   Wit: require('./lib/wit'),
   OpenHabClient: require('./lib/openhabclient'),
-  WitActions:require('./witactions') ,
+  WitActions:require('./witActions') ,
   
 };
 const {DEFAULT_MAX_STEPS} = require('./lib/config');
