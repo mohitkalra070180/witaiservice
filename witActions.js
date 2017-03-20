@@ -149,8 +149,11 @@ function WitActions(opts)
 			.on('data', function (data) {channelNumbers.push(data.document.id+':'+data.document.title)})
 			.on('end' , function(){ console.log(JSON.stringify(channelNumbers));
 									var sortedChannelNumbers=sort(channelNumbers);
-									OpenHabRestClient.Put_Status('Channel_Unknown', (sortedChannelNumbers[0].split(':'))[0],handler);
-									//context.number=(sortedChannelNumbers[0].split(':'))[0]);
+									if(sortedChannelNumbers[0]!=undefined)
+									{
+									 OpenHabRestClient.Put_Status('Channel_Unknown', (sortedChannelNumbers[0].split(':'))[0],handler);
+									}
+									
 									});
 		
 
